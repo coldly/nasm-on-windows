@@ -50,8 +50,8 @@ print_esp:
     mov rcx, -0Bh   ;STD_OUTPUT_HANDLE
     call GetStdHandle
     mov rcx, rax
-    mov rdx, sError
-    mov r8, lError
+    mov rdx, sHex
+    mov r8, lHex
     xor r9, r9
     push r9
     sub rsp, 20h ;Give Win64 API calls room
