@@ -1,4 +1,5 @@
 [BITS 64]
+  DEFAULT REL
 
   GLOBAL _main
   EXTERN ExitProcess
@@ -8,6 +9,9 @@
 
   SECTION .text
 _main:
+    ;align stack to 16 bytes for Win64 calls
+    and rsp, -10h
+
     ;;; GetCommandLineA retrieves the cmdline as it was called. It
     ;;;   includes the program name as it was called (e.g. quotes,
     ;;;   relative/absolute path). 2 spaces (ASCII code 20h)
@@ -17,7 +21,7 @@ _main:
     mov rdi, rax
     call strlen_v3
     mov rbx, rcx
-    mov rcx, 0fffffff5h   ;STD_OUTPUT_HANDLE
+    mov rcx, -0Bh   ;STD_OUTPUT_HANDLE
     call GetStdHandle
     mov rcx, rax
     mov rdx, rsi

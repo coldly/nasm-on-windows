@@ -7,7 +7,7 @@
 
   SECTION .text
 _main:
-    push -11D   ;STD_OUTPUT_HANDLE
+    push -0Bh   ;STD_OUTPUT_HANDLE
     call _GetStdHandle@4
     push 0
     push 0

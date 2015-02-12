@@ -1,4 +1,5 @@
 [BITS 64]
+  DEFAULT REL
 
   GLOBAL _main
   EXTERN ExitProcess
@@ -7,7 +8,10 @@
 
   SECTION .text
 _main:
-    mov rcx, 0fffffff5h   ;STD_OUTPUT_HANDLE
+    ;align stack to 16 bytes for Win64 calls
+    and rsp, -10h
+
+    mov rcx, -0Bh   ;STD_OUTPUT_HANDLE
     call GetStdHandle
     mov rcx, rax
     mov rdx, message

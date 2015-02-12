@@ -16,7 +16,7 @@ _main:
     mov esi, eax
     mov edi, eax
     call strlen_v3
-    push -11D   ;STD_OUTPUT_HANDLE
+    push -0Bh   ;STD_OUTPUT_HANDLE
     call _GetStdHandle@4
     push 0
     push 0
