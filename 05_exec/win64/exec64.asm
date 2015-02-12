@@ -27,10 +27,13 @@
   SECTION .bss
     stdout resq 1
 
+
   SECTION .text
 _main:
     ;align stack to 16 bytes for Win64 calls
     and rsp, -10h
+    ;give room to Win64 API calls that don't take stack params
+    sub rsp, 020h
 
     mov rcx, -0Bh   ;STD_OUTPUT_HANDLE
     call GetStdHandle
@@ -57,8 +60,9 @@ _main:
     xor r8, r8
     mov edx, edi
     xor ecx, ecx
-    sub rsp, 20h
+    sub rsp, 20h ;Give Win64 API calls room
     call CreateProcessA
+    add rsp, 50h ;Restore Stack Pointer
     cmp rax, 0
     jz .error
 
@@ -81,7 +85,9 @@ _main:
     mov r8, lError
     xor r9, r9
     push r9
+    sub rsp, 20h ;Give Win64 API calls room
     call WriteFile
+    add rsp, 28h ;Restore Stack Pointer
     mov rcx, rbx
     call ExitProcess
     mov rax, rbx
@@ -92,7 +98,9 @@ _main:
     mov r8, lUsage
     xor r9, r9
     push r9
+    sub rsp, 20h ;Give Win64 API calls room
     call WriteFile
+    add rsp, 28h ;Restore Stack Pointer
     mov rcx, 0
     call ExitProcess
     mov rax, 2

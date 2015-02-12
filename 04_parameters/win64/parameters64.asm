@@ -11,6 +11,8 @@
 _main:
     ;align stack to 16 bytes for Win64 calls
     and rsp, -10h
+    ;give room to Win64 API calls that don't take stack params
+    sub rsp, 020h
 
     ;;; GetCommandLineA retrieves the cmdline as it was called. It
     ;;;   includes the program name as it was called (e.g. quotes,
@@ -28,7 +30,9 @@ _main:
     mov r8, rbx
     xor r9, r9
     push r9
+    sub rsp, 20h ;Give Win64 API calls room
     call WriteFile
+    add rsp, 28h ;Restore Stack Pointer
     mov rcx, 0
     call ExitProcess
     xor rax, rax
