@@ -1,4 +1,6 @@
-nasm -fwin32 hello32.asm
-golink /console /dynamicbase /nxcompat /entry _main /fo hello32_golink.exe hello32.obj kernel32.dll
-"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe" /LIBPATH:"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Lib" /DYNAMICBASE /NXCOMPAT /SUBSYSTEM:CONSOLE /MACHINE:X86 /ENTRY:main /OUT:hello32_msft.exe hello32.obj kernel32.lib
-del hello32.obj
+@echo off
+nasm -fwin32 %~dp0hello32.asm -o %~dp0hello32.obj
+golink /console /dynamicbase /nxcompat /entry _main /fo hello32_golink.exe %~dp0hello32.obj kernel32.dll
+CALL %~dp0..\..\setmspath.bat
+%MSLinker% /LIBPATH:%MSLibsX86% /DYNAMICBASE /NXCOMPAT /SUBSYSTEM:CONSOLE /MACHINE:X86 /ENTRY:main /OUT:hello32_msft.exe %~dp0hello32.obj kernel32.lib
+del %~dp0hello32.obj
